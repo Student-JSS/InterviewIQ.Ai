@@ -19,7 +19,7 @@ export const askAi = async (messages) => {
       },
     );
 
-    const content = response?.data?.choices?.[0]?.messages?.content;
+    const content = response?.data?.choices?.[0]?.message?.content;
     if (!content || !content.trim()) {
       throw new Error("No content received from AI");
     }
