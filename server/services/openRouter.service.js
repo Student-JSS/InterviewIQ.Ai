@@ -13,8 +13,12 @@ export const askAi = async (messages) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
+          headers: {
+            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": "http://localhost:5173",
+            "X-Title": "InterviewIQ",
+          },
         },
       },
     );
@@ -25,7 +29,10 @@ export const askAi = async (messages) => {
     }
     return content;
   } catch (error) {
-    console.error("OpenRouter API error:", error.response?.data || error.message);
+    console.error(
+      "OpenRouter API error:",
+      error.response?.data || error.message,
+    );
     throw new Error("Failed to get response from OpenRouter API");
   }
 };
