@@ -265,7 +265,7 @@ const Step1SetUp = ({ onStart }) => {
             )}
             <motion.button
             onClick={handleStart}
-              disabled={!role || !experience || loading}
+              disabled={!role || !experience || loading || analyzing}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               className="w-full disabled:bg-gray-600 bg-green-600 hover:bg-green-500 text-white py-3 rounded-full text-lg font-demibold transition duration-300 shadow-md"

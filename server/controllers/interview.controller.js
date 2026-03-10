@@ -1,6 +1,8 @@
 import fs from "fs";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import { askAi } from "../services/openRouter.service.js";
+import Interview from "../models/interview.model.js";
+import User from "../models/user.model.js";
 
 export const analyzeResume = async (req, res) => {
   try {
@@ -51,7 +53,12 @@ export const analyzeResume = async (req, res) => {
     const aiResponse = await askAi(messages);
     console.log("AI response:", aiResponse);
 
-    const parsed = JSON.parse(aiResponse);
+    const cleaned = aiResponse
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const parsed = JSON.parse(cleaned);
 
     fs.unlinkSync(filepath);
 
@@ -86,7 +93,7 @@ export const generateQuestion = async (req, res) => {
         .json({ message: "Role, Experience and Mode are required." });
     }
 
-    const user = await UserActivation.findById(req.userId);
+    const user = await User.findById(req.userId);
 
     if (!user) {
       return res.status(404).json({
@@ -293,9 +300,14 @@ Answer: ${answer}
       },
     ];
 
-    const airResponse = await askAi(messages);
+    const aiResponse = await askAi(messages);
 
-    const parsed = JSON.parse(airResponse);
+    const cleaned = aiResponse
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const parsed = JSON.parse(cleaned);
     question.answer = answer;
     question.confidence = parsed.confidence;
     question.communication = parsed.communication;
