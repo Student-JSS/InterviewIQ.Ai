@@ -57,57 +57,7 @@ const Pricing = () => {
     },
   ];
 
-  const handlePayment = async (plan) => {
-    try {
-      setLoadingPlan(plan.id);
-
-      const amount = plan.id === "basic" ? 100 : plan.id === "pro" ? 500 : 0;
-
-      const result = await axios.post(
-        ServerURL + "/api/payment/order",
-        {
-          planId: plan.id,
-          amount: amount,
-          credits: plan.credits,
-        },
-        { withCredentials: true },
-      );
-
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: result.data.amount,
-        currency: "INR",
-        name: "InterviewIQ.AI",
-        description: `${plan.name} - ${plan.credits} Credits`,
-        order_id: result.data.id,
-
-        handler: async function (response) {
-          const verifyPay = await axios.post(
-            ServerURL + "/api/payment/verify",
-            response,
-            { withCredentials: true },
-          );
-
-          dispatch(setUserData(verifyPay.data.user));
-
-          alert("Payment successful! Credits Added!");
-          navigate("/");
-
-          setLoadingPlan(null);
-        },
-
-        theme: {
-          color: "#10b981",
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (error) {
-      console.log(error);
-      setLoadingPlan(null);
-    }
-  };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-emerald-50 py-16 px-6">
