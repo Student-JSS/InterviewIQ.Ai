@@ -11,7 +11,7 @@ import interviewRouter from './routes/interview.route.js';
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://interviewiq-ai-client.onrender.com',
     credentials: true,
 }));
 app.use((req, res, next) => {
