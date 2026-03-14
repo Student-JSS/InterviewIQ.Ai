@@ -10,10 +10,8 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { ServerURL } from "../App";
-import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../redux/userSlice";
-import { setLogLevel } from "firebase/app";
 
 const Step1SetUp = ({ onStart }) => {
   const { userData } = useSelector((state) => state.user);
@@ -61,9 +59,18 @@ const Step1SetUp = ({ onStart }) => {
   const handleStart = async () => {
     setLoading(true);
     try {
+      const trimmedRole = role.trim();
+      const trimmedExperience = experience.trim();
       const result = await axios.post(
         ServerURL + "/api/interview/generate-questions",
-        { role, experience, mode, resumeText, projects, skills },
+        {
+          role: trimmedRole,
+          experience: trimmedExperience,
+          mode,
+          resumeText,
+          projects,
+          skills,
+        },
         { withCredentials: true },
       );
       console.log(result.data);
@@ -75,7 +82,8 @@ const Step1SetUp = ({ onStart }) => {
       setLoading(false);
       onStart(result.data);
     } catch (error) {
-      console.log(error);
+      console.log("Status:", error.response?.status);
+      console.log("Error body:", error.response?.data); // <-- this is the key line
       setLoading(false);
     }
   };
@@ -264,13 +272,15 @@ const Step1SetUp = ({ onStart }) => {
               </motion.div>
             )}
             <motion.button
-            onClick={handleStart}
-              disabled={!role || !experience || loading || analyzing}
+              onClick={handleStart}
+              disabled={
+                !role.trim() || !experience.trim() || loading || analyzing
+              }
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               className="w-full disabled:bg-gray-600 bg-green-600 hover:bg-green-500 text-white py-3 rounded-full text-lg font-demibold transition duration-300 shadow-md"
             >
-              {loading ? "Starting..." :"Start Interview"}
+              {loading ? "Starting..." : "Start Interview"}
             </motion.button>
           </div>
         </motion.div>
