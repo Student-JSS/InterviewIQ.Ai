@@ -58,6 +58,11 @@ const Pricing = () => {
   ];
 
   
+<<<<<<< HEAD
+=======
+
+      
+>>>>>>> 2a0a7a1 (update)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-emerald-50 py-16 px-6">
