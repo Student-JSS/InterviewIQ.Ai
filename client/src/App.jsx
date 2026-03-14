@@ -11,7 +11,7 @@ import InterviewHistory from "./pages/InterviewHistory";
 import Pricing from "./pages/Pricing";
 import InterviewReport from "./pages/InterviewReport";
 
-export const ServerURL = "http://localhost:8000";
+export const ServerURL = "https://interviewiq-ai-gg6t.onrender.com";
 
 const App = () => {
   const dispatch = useDispatch();
